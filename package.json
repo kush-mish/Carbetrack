@@ -14,7 +14,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "vue": "^3.5.18"
+    "firebase": "^12.2.1",
+    "vue": "^3.5.18",
+    "vuefire": "^3.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
