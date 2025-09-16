@@ -1,5 +1,5 @@
 <script setup>
-import { Bars3BottomLeftIcon } from '@heroicons/vue/24/solid'
+import { Bars3BottomLeftIcon, ChartPieIcon, BuildingOffice2Icon } from '@heroicons/vue/24/solid'
 </script>
 
 <template>
@@ -26,14 +26,17 @@ import { Bars3BottomLeftIcon } from '@heroicons/vue/24/solid'
       <div class="drawer-side z-9 pt-16">
         <label for="sidebar-drawer" class="drawer-overlay"></label>
         <aside class="p-4 w-64 h-full bg-base-100 text-base-content border-r border-base-300">
-          <ul class="list">
-            <li class="list-row">
-              <RouterLink to="/" class="btn btn-ghost" :class="{ 'btn-active': $route.path === '/' }">
+          <ul class="flex flex-col gap-2">
+            <li class="flex flex-col">
+              <RouterLink to="/" class="btn btn-ghost justify-start" :class="{ 'btn-active': $route.path === '/' }">
+                <ChartPieIcon class="size-6 mr-2" />
                 Dashboard
               </RouterLink>
             </li>
-            <li class="list-row">
-              <RouterLink to="/projects" class="btn btn-ghost" :class="{ 'btn-active': $route.path === '/projects' }">
+            <li class="flex flex-col">
+              <RouterLink to="/projects" class="btn btn-ghost justify-start"
+                :class="{ 'btn-active': $route.path === '/projects' }">
+                <BuildingOffice2Icon class="size-6 mr-2" />
                 Projects
               </RouterLink>
             </li>
