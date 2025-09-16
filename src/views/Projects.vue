@@ -1,13 +1,16 @@
 <script setup>
 
 import { ref } from 'vue'
+import { useFirestore, useCollection } from 'vuefire'
+import { collection, addDoc, query, orderBy, limit } from 'firebase/firestore'
+import { format } from 'date-fns'
 
 const drawerOpen = ref(false)
 
 const newProject = ref({
   name: '',
   location: '',
-  createdAt: '',
+  createdAt: new Date(),
   totalEmissions: 0
 })
 
@@ -19,23 +22,25 @@ function closeDrawer() {
   drawerOpen.value = false
 }
 
-function addProject() {
-  if (!newProject.value.name || !newProject.value.location || !newProject.value.createdAt) return
-  projects.value.push({
-    name: newProject.value.name,
-    location: newProject.value.location,
-    createdAt: newProject.value.createdAt,
-  })
-  newProject.value = { name: '', location: '', createdAt: '', totalEmissions: 0 }
-  closeDrawer()
-}
+const db = useFirestore()
+const projectsCollection = query(collection(db, 'projects'), orderBy('createdAt', 'desc'), limit(50))
+const projects = useCollection(projectsCollection)
 
-const projects = ref([
-  { id: 1, name: 'Solar Farm', location: 'California', createdAt: '2025-01-10', totalEmissions: 1200 },
-  { id: 2, name: 'Wind Park', location: 'Texas', createdAt: '2025-02-15', totalEmissions: 800 },
-  { id: 3, name: 'Hydro Plant', location: 'Oregon', createdAt: '2025-03-20', totalEmissions: 950 },
-  { id: 4, name: 'Urban Solar', location: 'New York', createdAt: '2025-04-05', totalEmissions: 600 },
-])
+async function addProject() {
+  if (!newProject.value.name || !newProject.value.location || !newProject.value.createdAt) return
+  try {
+    await addDoc(projectsCollection, {
+      name: newProject.value.name,
+      location: newProject.value.location,
+      createdAt: new Date(newProject.value.createdAt),
+      totalEmissions: newProject.value.totalEmissions,
+    })
+    newProject.value = { name: '', location: '', createdAt: new Date(), totalEmissions: 0 }
+    closeDrawer()
+  } catch (e) {
+    alert('Failed to add project: ' + e.message)
+  }
+}
 </script>
 
 <template>
@@ -60,7 +65,7 @@ const projects = ref([
             <td>{{ project.id }}</td>
             <td>{{ project.name }}</td>
             <td>{{ project.location }}</td>
-            <td>{{ project.createdAt }}</td>
+            <td>{{ format(project.createdAt.toDate(), 'MMM dd, yyyy') }}</td>
             <td>{{ project.totalEmissions }}</td>
           </tr>
         </tbody>
@@ -82,7 +87,8 @@ const projects = ref([
           </fieldset>
           <fieldset class="fieldset space-y-2">
             <legend class="fieldset-legend">Date</legend>
-            <input class="input w-full" type="date" v-model="newProject.createdAt" />
+            <input class="input w-full" type="date" :value="format(newProject.createdAt, 'yyyy-MM-dd')"
+              @input="newProject.createdAt = new Date($event.target.value)" />
           </fieldset>
 
           <button class="btn btn-primary mt-4" @click="addProject">Add Project</button>
