@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useFirestore, useCollection } from 'vuefire';
-import { collection, addDoc, query, orderBy, limit } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, limit, updateDoc, doc } from 'firebase/firestore';
 import { format } from 'date-fns';
 
 const drawerOpen = ref(false);
@@ -53,6 +53,11 @@ async function saveLog() {
       totalCO2: totalCO2.value,
       date: new Date(logForm.value.date),
     });
+
+    await updateDoc(doc(db, 'projects', logForm.value.projectId), {
+      totalEmissions: (projects.value.find(p => p.id === logForm.value.projectId)?.totalEmissions || 0) + totalCO2.value,
+    });
+
     logForm.value = {
       projectId: null,
       material: null,
@@ -61,6 +66,7 @@ async function saveLog() {
       emissionFactor: 0,
       date: format(new Date(), 'yyyy-MM-dd'),
     };
+
     closeDrawer();
   } catch (e) {
     alert('Failed to log emissions: ' + e.message);
