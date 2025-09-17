@@ -129,7 +129,7 @@ async function saveLog() {
               </select>
             </fieldset>
             <fieldset class="fieldset space-y-2">
-              <legend class="fieldset-legend">Quantity ({{ logForm.unit || 'unit' }})</legend>
+              <legend class="fieldset-legend">Quantity ({{ unit || 'unit' }})</legend>
               <input class="input w-full" type="number" min="0" step="any" v-model="logForm.quantity" required />
             </fieldset>
             <fieldset class="fieldset space-y-2">
