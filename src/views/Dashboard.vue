@@ -17,6 +17,10 @@ const db = useFirestore();
 const projectsCollection = query(collection(db, 'projects'), orderBy('createdAt', 'desc'), limit(50));
 const projects = useCollection(projectsCollection);
 
+const totalEmissions = computed(() => {
+  return projects.value.reduce((sum, project) => sum + (project.totalEmissions || 0), 0);
+});
+
 const materialsCollection = collection(db, 'materials');
 const materials = useCollection(materialsCollection);
 
@@ -86,7 +90,7 @@ async function saveLog() {
       <div class="card bg-base-100 shadow">
         <div class="card-body">
           <h2 class="card-title">Total Emissions</h2>
-          <p class="text-4xl font-bold">{{ totalEmissions }} tCO₂e</p>
+          <p class="text-4xl font-bold">{{ totalEmissions }} CO₂e</p>
         </div>
       </div>
       <!-- Emissions by Project -->
