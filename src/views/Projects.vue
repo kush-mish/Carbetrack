@@ -23,8 +23,13 @@ function closeDrawer() {
 }
 
 const db = useFirestore()
-const projectsCollection = query(collection(db, 'projects'), orderBy('createdAt', 'desc'), limit(50))
-const projects = useCollection(projectsCollection)
+const projectsCollection = collection(db, 'projects')
+const projectsQuery = query(
+  projectsCollection,
+  orderBy('createdAt', 'desc'),
+  limit(50)
+)
+const projects = useCollection(projectsQuery, { ssrKey: 'projects-latest' })
 
 async function addProject() {
   if (!newProject.value.name || !newProject.value.location || !newProject.value.createdAt) return
@@ -77,22 +82,25 @@ async function addProject() {
       <div class="drawer-side">
         <div class="flex flex-col space-y-4 bg-base-200 w-full md:w-120 h-full p-8 shadow-lg">
           <h2 class="text-xl font-bold">New Project</h2>
-          <fieldset class="fieldset space-y-2">
-            <legend class="fieldset-legend">Name</legend>
-            <input class="input w-full" type="text" v-model="newProject.name" placeholder="e.g. Solar Farm" />
-          </fieldset>
-          <fieldset class="fieldset space-y-2">
-            <legend class="fieldset-legend">Location</legend>
-            <input class="input w-full" type="text" v-model="newProject.location" placeholder="e.g. California" />
-          </fieldset>
-          <fieldset class="fieldset space-y-2">
-            <legend class="fieldset-legend">Date</legend>
-            <input class="input w-full" type="date" :value="format(newProject.createdAt, 'yyyy-MM-dd')"
-              @input="newProject.createdAt = new Date($event.target.value)" />
-          </fieldset>
-
-          <button class="btn btn-primary mt-4" @click="addProject">Add Project</button>
-          <label class="btn btn-ghost" @click="closeDrawer">Cancel</label>
+          <form class="space-y-4" @submit.prevent="addProject">
+            <fieldset class="fieldset space-y-2">
+              <legend class="fieldset-legend">Name</legend>
+              <input class="input w-full" type="text" v-model="newProject.name" placeholder="e.g. Solar Farm"
+                required />
+            </fieldset>
+            <fieldset class="fieldset space-y-2">
+              <legend class="fieldset-legend">Location</legend>
+              <input class="input w-full" type="text" v-model="newProject.location" placeholder="e.g. California"
+                required />
+            </fieldset>
+            <fieldset class="fieldset space-y-2">
+              <legend class="fieldset-legend">Date</legend>
+              <input class="input w-full" type="date" :value="format(newProject.createdAt, 'yyyy-MM-dd')"
+                @input="newProject.createdAt = new Date($event.target.value)" required />
+            </fieldset>
+            <button class="btn btn-primary mt-4 w-full" type="submit">Add Project</button>
+            <label class="btn btn-ghost w-full" @click="closeDrawer">Cancel</label>
+          </form>
         </div>
       </div>
     </div>
