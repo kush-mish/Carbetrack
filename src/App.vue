@@ -12,7 +12,7 @@ import { Bars3BottomLeftIcon, ChartPieIcon, BuildingOffice2Icon } from '@heroico
         </label>
       </div>
       <div class="flex-1 px-4">
-        <h1 class="text-lg font-bold text-primary">Carbon Emissions Tracker</h1>
+        <h1 class="text-lg font-bold text-base">Carbon Emissions Tracker</h1>
       </div>
     </div>
     <!-- Drawer below navbar -->
