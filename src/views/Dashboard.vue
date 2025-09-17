@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useFirestore, useCollection } from 'vuefire';
-import { collection, query, orderBy, limit } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import EmissionsLogger from '@/components/EmissionsLogger.vue';
+import EmissionsByProject from '@/components/charts/EmissionsByProject.vue';
+import EmissionsOverTime from '@/components/charts/EmissionsOverTime.vue';
 
 const drawerOpen = ref(false);
 
@@ -14,8 +16,10 @@ function closeDrawer() {
 }
 
 const db = useFirestore();
-const projectsCollection = query(collection(db, 'projects'), orderBy('createdAt', 'desc'), limit(50));
+const projectsCollection = collection(db, 'projects');
 const projects = useCollection(projectsCollection);
+const emissionsCollection = collection(db, 'emissions');
+const emissions = useCollection(emissionsCollection);
 
 const totalEmissions = computed(() => {
   return projects.value.reduce((sum, project) => sum + (project.totalEmissions || 0), 0).toFixed(2);
@@ -31,22 +35,24 @@ const totalEmissions = computed(() => {
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Total Emissions -->
-      <div class="card bg-base-100 shadow">
+      <div class="card card-border bg-base-100">
         <div class="card-body">
           <h2 class="card-title">Total Emissions</h2>
           <p class="text-4xl font-bold">{{ totalEmissions }} CO₂e</p>
         </div>
       </div>
       <!-- Emissions by Project -->
-      <div class="card bg-base-100 shadow">
+      <div class="card card-border bg-base-100">
         <div class="card-body">
           <h2 class="card-title">Emissions by Project</h2>
+          <EmissionsByProject :projects="projects" />
         </div>
       </div>
       <!-- Emissions Over Time -->
-      <div class="card bg-base-100 shadow">
+      <div class="card card-border bg-base-100">
         <div class="card-body">
           <h2 class="card-title">Emissions Over Time</h2>
+          <EmissionsOverTime :emissions="emissions" />
         </div>
       </div>
     </div>
