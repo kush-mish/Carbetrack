@@ -28,19 +28,19 @@ const totalEmissions = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col mb-8 space-y-8">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">Dashboard</h1>
       <button class="btn btn-primary" @click="openDrawer">Log Emissions</button>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Total Emissions -->
-      <div class="card card-border bg-base-100">
-        <div class="card-body">
-          <h2 class="card-title">Total Emissions</h2>
-          <p class="text-4xl font-bold">{{ totalEmissions }} CO₂e</p>
-        </div>
+    <!-- Total Emissions -->
+    <div class="card card-border bg-base-100 text-center">
+      <div class="card-body flex flex-col items-center">
+        <h2 class="card-title">Total Emissions</h2>
+        <p class="text-4xl font-bold">{{ totalEmissions }} CO₂e</p>
       </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Emissions by Project -->
       <div class="card card-border bg-base-100">
         <div class="card-body">
