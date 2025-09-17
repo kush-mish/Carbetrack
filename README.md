@@ -1,35 +1,42 @@
 # Carbetrack
 
-This template should help get you started developing with Vue 3 in Vite.
+The project Carbon Emissions Tracker is hosted at https://carbetrack.web.app.
 
-## Recommended IDE Setup
+## Project Setup Instructions
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+1. **Clone the repository**
 
-## Customize configuration
+   ```sh
+   git clone git@github.com:kush-mish/Carbetrack.git
+   cd Carbetrack
+   ```
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+2. **Install dependencies**
 
-## Project Setup
+   ```sh
+   npm install
+   ```
 
-```sh
-npm install
-```
+3. **Development Server**
 
-### Compile and Hot-Reload for Development
+   ```sh
+   npm run dev
+   ```
 
-```sh
-npm run dev
-```
+   The app will be available at `http://localhost:5173` by default.
 
-### Compile and Minify for Production
+4. **Build for Production**
 
-```sh
-npm run build
-```
+   ```sh
+   npm run build
+   ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Walkthrough
 
-```sh
-npm run lint
-```
+The app has 2 pages:
+
+1. Dashboard
+   It displays total emissions across all projects, and the 2 charts.
+   This page also has a form that allows the users to log emissions by selecting project and the material causing the emissions. The form opens up in a drawer on the left.
+2. Projects Management
+   All the projects with basic details are listed in a table. New project can be created by the form through the Add new project button.
